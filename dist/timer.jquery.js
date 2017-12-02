@@ -1,4 +1,4 @@
-/*! timer.jquery 0.7.1 2017-09-27*/
+/*! timer.jquery 0.7.1 2017-12-02*/
 (function($) {
 var Constants = {
 	PLUGIN_NAME: 'timer',
@@ -54,6 +54,7 @@ function getDefaultConfig() {
 	return {
 		seconds: 0,					// Default seconds value to start timer from
 		editable: false,			// Allow making changes to the time by clicking on it
+		restartAfterEdit: true,		// Whether to restart timer after making changes - only relevant with editable:true
 		duration: null,				// Duration to run callback after
 		callback: function() {		// Default callback to run after elapsed duration
 			console.log('Time up!');
@@ -223,7 +224,9 @@ function makeEditable(timerInstance) {
 		timerInstance.totalSeconds = prettyTimeToSeconds(
 			$(timerInstance.element)[timerInstance.html]()
 		);
-		timerInstance.resume();
+		if (timerInstance.config.restartAfterEdit) {
+			timerInstance.resume();
+		}
 	});
 }
 
