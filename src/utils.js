@@ -45,6 +45,7 @@ function getDefaultConfig() {
 	return {
 		seconds: 0,					// Default seconds value to start timer from
 		editable: false,			// Allow making changes to the time by clicking on it
+		restartAfterEdit: true,		// Whether to restart timer after making changes - only relevant with editable:true
 		startOnCreate: true,		// Whether to start timer on create or wait for a resume call
 		duration: null,				// Duration to run callback after
 		callback: function() {		// Default callback to run after elapsed duration
@@ -215,7 +216,9 @@ function makeEditable(timerInstance) {
 		timerInstance.totalSeconds = prettyTimeToSeconds(
 			$(timerInstance.element)[timerInstance.html]()
 		);
-		timerInstance.resume();
+		if (timerInstance.config.restartAfterEdit) {
+			timerInstance.resume();
+		}
 	});
 }
 
