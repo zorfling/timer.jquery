@@ -45,6 +45,7 @@ function getDefaultConfig() {
 	return {
 		seconds: 0,					// Default seconds value to start timer from
 		editable: false,			// Allow making changes to the time by clicking on it
+		startOnCreate: true,		// Whether to start timer on create or wait for a resume call
 		duration: null,				// Duration to run callback after
 		callback: function() {		// Default callback to run after elapsed duration
 			console.log('Time up!');
