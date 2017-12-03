@@ -1,4 +1,4 @@
-/*! timer.jquery 0.7.1 2017-12-02*/
+/*! timer.jquery 0.7.1 2017-12-03*/
 (function($) {
 var Constants = {
 	PLUGIN_NAME: 'timer',
@@ -55,6 +55,7 @@ function getDefaultConfig() {
 		seconds: 0,					// Default seconds value to start timer from
 		editable: false,			// Allow making changes to the time by clicking on it
 		restartAfterEdit: true,		// Whether to restart timer after making changes - only relevant with editable:true
+		startOnCreate: true,		// Whether to start timer on create or wait for a resume call
 		duration: null,				// Duration to run callback after
 		callback: function() {		// Default callback to run after elapsed duration
 			console.log('Time up!');
@@ -345,9 +346,13 @@ function Timer(element, config) {
 
 Timer.prototype.start = function() {
 	if (this.state !== Constants.TIMER_RUNNING) {
-		utils.setState(this, Constants.TIMER_RUNNING);
+		if (this.config.startOnCreate) {
+			utils.setState(this, Constants.TIMER_RUNNING);
+			this.intervalId = setInterval(utils.intervalHandler.bind(null, this), this.config.updateFrequency);
+		} else {
+			utils.setState(this, Constants.TIMER_PAUSED);
+		}
 		this.render();
-		this.intervalId = setInterval(utils.intervalHandler.bind(null, this), this.config.updateFrequency);
 	}
 };
 
